@@ -25,3 +25,28 @@ data being synthetic (Synthea-style) is different: real patient records are PHI 
 legally can't be freely distributed, so synthetic is the actual industry-standard way
 to work with this data shape. Same word ("synthetic"), opposite verdict - the
 difference is *why* it's synthetic.
+
+## Day (2026-09-30) — pivoting to a real streaming demo, on a bigger real dataset
+
+**The 4 bundled ADT sample files are not a "small version of something bigger" - they
+are the whole thing.** They're real, complete data records (not schemas/templates),
+but there are only 4 of them, period. No hidden larger dataset behind them. If a real
+streaming demo needs real volume, those 4 files alone can't provide it.
+
+**Found a genuinely large, real, free alternative: `s3://hls-eng-data-public/data/
+synthea/fhir/fhir/`** - the same public bucket dbignite's own demo notebook uses.
+Confirmed via `aws s3 ls --no-sign-request --summarize` (not guessed): 1,156 files,
+2.08GB total. Different data shape than the 4 ADT files though - not more ADT
+messages, but one full patient history bundle per file.
+
+**One patient's FHIR bundle is not "one record" - it's ~1,200 bundled resources of
+16 different types.** Checked a real file directly: 1,213 entries - 447 Observations
+(lab results), 174 Claims, 131 DiagnosticReports, 98 MedicationRequests, 76
+Encounters, plus Procedures/Conditions/Immunizations/CarePlans/etc., all for ONE
+Patient resource. This is the real reason a generic JSON flattener isn't enough here -
+a loader has to understand 16 different resource shapes mixed together in one file,
+not just "parse nested JSON" in general.
+
+**Decision: use this 2GB bucket for the streaming demo, not the 4 ADT files.** Real
+volume (1,156 patients) makes "simulate patients arriving over time, process only
+what's new" a genuine demonstration instead of a 4-record toy example.

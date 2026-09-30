@@ -29,6 +29,24 @@ to make between the two, or a case for using both. Record that decision here onc
   distributed) - not a data-quality red flag the way the earlier fake e-commerce
   dataset was.
 
+## Streaming source decision (2026-09-30)
+
+The 4 ADT sample files bundled with dbignite are real, complete data records - not
+schemas, not a preview of something bigger. There are only 4, period. That's fine for
+proving the ADT lookup logic works, but too small to demonstrate real incremental/
+streaming ingestion.
+
+**Decision: use `s3://hls-eng-data-public/data/synthea/fhir/fhir/` instead** - the same
+public bucket dbignite's own demo notebook is built around (Synthea's COVID module).
+Confirmed via `aws s3 ls --no-sign-request --summarize`: **1,156 files, 2.08GB total**.
+One file = one patient's full FHIR bundle (not an ADT message) - checked one directly:
+1,213 entries across 16 resource types (447 Observations, 174 Claims, 131
+DiagnosticReports, 98 MedicationRequests, 76 Encounters, etc.) for that single patient.
+
+Streaming design: batched "arrival waves" (e.g. 50-100 patient files per wave),
+triggering a Lakeflow pipeline update per wave rather than per file, to prove
+incremental processing without 1,156 separate pipeline runs.
+
 ## Architecture difference from the sibling repos (real, not a choice)
 
 BRFSS and Yelp are pure SQL, run via the Databricks SQL Statement Execution API
