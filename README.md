@@ -1,9 +1,9 @@
 # FHIR Healthcare Data Pipeline
 
-A dataset for the team brief being worked on in the sibling repos `D:\data-lab2`
-(BRFSS, core comparison) and `D:\yelp-dataset` (Secondary dataset). See
-`docs/brief.md` for the full brief and `docs/scope_and_gaps.md` for what's actually
-built vs. what's still open.
+A dataset for a team brief comparing Databricks and Snowflake as a data platform.
+Sibling repos: [data-lab2](https://github.com/thisismairaj/data-lab2) (BRFSS, core
+comparison) and [yelp-dataset](https://github.com/thisismairaj/yelp-dataset)
+(Secondary dataset).
 
 **Data:** FHIR R4 bundles, synthetic (Synthea-style) patient data - the correct,
 expected choice for this domain, since real patient data is protected health
@@ -17,8 +17,7 @@ pipeline runs as PySpark code in a Databricks notebook on real compute.
 compute, so it can't run this).
 
 ## Layout
-- `docs/` — brief, scope/gaps, learning log
 - `vendor/dbignite/` — Databricks' FHIR flattening library (vendored, not a submodule)
 - `sql/databricks/` — SQL for anything downstream of the flattening step
 - `scripts/` — upload/generator/job-submission scripts
-- `data/raw/` — local staging (git-ignored, not committed)
+- `data/raw/` — local staging
