@@ -1,0 +1,25 @@
+bundle:
+  name: fhir-streaming
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-93916528-90f8.cloud.databricks.com
+      root_path: /Workspace/Users/thisismairaj@gmail.com/.bundle/${bundle.name}/${bundle.target}
+
+  staging:
+    mode: production
+    workspace:
+      host: https://dbc-93916528-90f8.cloud.databricks.com
+      root_path: /Workspace/Users/thisismairaj@gmail.com/.bundle/${bundle.name}/${bundle.target}
+
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-93916528-90f8.cloud.databricks.com
+      root_path: /Workspace/Users/thisismairaj@gmail.com/.bundle/${bundle.name}/${bundle.target}
