@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    fhir_stream_job:
+      name: fhir-streaming-job-${bundle.target}
+      tasks:
+        - task_key: run_fhir_stream_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.fhir_stream_pipeline.id}
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"
+        timezone_id: UTC
+        pause_status: PAUSED

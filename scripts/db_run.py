@@ -44,7 +44,8 @@ def api(method, path, body=None):
     cmd = ["databricks", "api", method, path, "-p", PROFILE]
     if body is not None:
         cmd += ["--json", json.dumps(body)]
-    r = subprocess.run(cmd, capture_output=True, text=True, env=env)
+    r = subprocess.run(cmd, capture_output=True, text=True, env=env,
+                        encoding="utf-8", errors="replace")
     if r.returncode != 0:
         raise RuntimeError(f"CLI error: {r.stderr.strip()}")
     return json.loads(r.stdout)

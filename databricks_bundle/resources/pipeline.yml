@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    fhir_stream_pipeline:
+      name: fhir-streaming-${bundle.target}
+      catalog: workspace
+      schema: fhir_lakeflow_${bundle.target}
+      serverless: true
+      continuous: false
+      libraries:
+        - glob:
+            include: ../transformations/**
